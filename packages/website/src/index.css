@@ -8,30 +8,37 @@
 @variant dark (.dark &);
 
 :root {
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.145 0 0);
-	/* 主题色渐变 */
-	--theme-color-1: rgb(88, 192, 252);
-	--theme-color-2: rgb(189, 69, 251);
+	--background: #f3f7f2;
+	--foreground: #0c1412;
+	/* Connect brand */
+	--theme-color-1: #9fcf1f;
+	--theme-color-2: #ff8f6b;
+	--connect-ink: #0c1412;
+	--connect-mist: #d8ebe0;
+	--connect-accent: #d6ff4b;
+	--connect-accent-deep: #9fcf1f;
+	--connect-warm: #ff8f6b;
+	--font-brand: 'Syne', sans-serif;
+	--font-body: 'Figtree', sans-serif;
 
 	/* shadcn */
-	--radius: 0.625rem;
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.145 0 0);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.205 0 0);
-	--primary-foreground: oklch(0.985 0 0);
-	--secondary: oklch(0.97 0 0);
-	--secondary-foreground: oklch(0.205 0 0);
-	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.556 0 0);
-	--accent: oklch(0.97 0 0);
-	--accent-foreground: oklch(0.205 0 0);
+	--radius: 0.75rem;
+	--card: #fafcf9;
+	--card-foreground: #0c1412;
+	--popover: #fafcf9;
+	--popover-foreground: #0c1412;
+	--primary: #12201b;
+	--primary-foreground: #f3f7f2;
+	--secondary: #e4eee6;
+	--secondary-foreground: #0c1412;
+	--muted: #e7efe8;
+	--muted-foreground: #4a6358;
+	--accent: #eaf6c8;
+	--accent-foreground: #0c1412;
 	--destructive: oklch(0.577 0.245 27.325);
-	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
+	--border: rgba(12, 20, 18, 0.12);
+	--input: rgba(12, 20, 18, 0.14);
+	--ring: #9fcf1f;
 	--chart-1: oklch(0.646 0.222 41.116);
 	--chart-2: oklch(0.6 0.118 184.704);
 	--chart-3: oklch(0.398 0.07 227.392);
@@ -50,8 +57,23 @@
 /* class-based dark mode - 应用到 html.dark */
 html.dark,
 :root.dark {
-	--background: #0a0a0a;
-	--foreground: #ededed;
+	--background: #0c1412;
+	--foreground: #d8ebe0;
+	--card: #15201c;
+	--card-foreground: #d8ebe0;
+	--popover: #15201c;
+	--popover-foreground: #d8ebe0;
+	--primary: #d6ff4b;
+	--primary-foreground: #0c1412;
+	--secondary: #1a2923;
+	--secondary-foreground: #d8ebe0;
+	--muted: #1a2923;
+	--muted-foreground: rgba(216, 235, 224, 0.68);
+	--accent: #1f3329;
+	--accent-foreground: #d6ff4b;
+	--border: rgba(214, 236, 214, 0.14);
+	--input: rgba(214, 236, 214, 0.18);
+	--ring: #d6ff4b;
 }
 
 /* 同时支持系统偏好 */
@@ -72,17 +94,53 @@ html.dark,
 body {
 	background: var(--background);
 	color: var(--foreground);
-	font-family:
-		system-ui,
-		-apple-system,
-		BlinkMacSystemFont,
-		'Segoe UI',
-		Roboto,
-		'Noto Sans',
-		'Liberation Sans',
-		sans-serif,
-		'Apple Color Emoji',
-		'Segoe UI Emoji';
+	font-family: var(--font-body);
+}
+
+@keyframes connect-rise {
+	from {
+		opacity: 0;
+		transform: translateY(18px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes connect-sheen {
+	0% {
+		background-position: 0% 50%;
+	}
+	100% {
+		background-position: 200% 50%;
+	}
+}
+
+@keyframes connect-float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
+}
+
+.connect-rise {
+	animation: connect-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.connect-rise-delay-1 {
+	animation-delay: 120ms;
+}
+
+.connect-rise-delay-2 {
+	animation-delay: 220ms;
+}
+
+.connect-rise-delay-3 {
+	animation-delay: 320ms;
 }
 
 /* 文档正文排版优化 */

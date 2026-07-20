@@ -1,54 +1,19 @@
 import type { PageAgent as PageAgentType } from 'page-agent'
 import { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'wouter'
+import { Link } from 'wouter'
 
-import { AnimatedGradientText } from '../../components/ui/animated-gradient-text'
-import { Highlighter } from '../../components/ui/highlighter'
-import { NeonGradientCard } from '../../components/ui/neon-gradient-card'
-import { Particles } from '../../components/ui/particles'
-import {
-	CDN_DEMO_CN_URL,
-	CDN_DEMO_URL,
-	// DEMO_API_KEY,
-	DEMO_BASE_URL,
-	DEMO_MODEL,
-} from '../../constants'
+import { CDN_DEMO_URL, DEMO_BASE_URL, DEMO_MODEL } from '../../constants'
 import { useLanguage } from '../../i18n/context'
+import { SITE } from '../../site'
 
 let pageAgentModule: Promise<typeof import('page-agent')> | null = null
-
-/**
- * Get the bookmarklet injection script
- * @param cdnSource Which CDN mirror to use
- * @param isZh Whether to use Chinese language
- */
-function getInjection(cdnSource: 'china' | 'international', isZh?: boolean) {
-	const cdn = cdnSource === 'china' ? CDN_DEMO_CN_URL : CDN_DEMO_URL
-	const locale = isZh ? 'zh-CN' : 'en-US'
-
-	const injection = encodeURI(
-		`javascript:(function(){var s=document.createElement('script');s.src=\`${cdn}?lang=${locale}&t=\${Math.random()}\`;s.setAttribute('crossorigin', true);s.type="text/javascript";s.onload=()=>console.log('PageAgent script loaded!');document.body.appendChild(s);})();`
-	)
-
-	return `
-	<a
-		href=${injection}
-		class="inline-flex items-center text-xs px-3 py-2 bg-blue-500 text-white font-medium rounded-lg hover:shadow-md transform hover:scale-105 transition-all duration-200 cursor-move border-2 border-dashed border-green-300"
-		draggable="true"
-		onclick="return false;"
-		title="Drag me to your bookmarks bar!"
-	>
-		✨PageAgent
-	</a>
-	`
-}
 
 export default function HeroSection() {
 	const { language, isZh } = useLanguage()
 
 	const defaultTask = isZh
-		? '从导航栏中进入文档页，打开"快速开始"相关的文档，帮我总结成 markdown'
-		: 'Goto docs in navigation bar, find Quick-Start section, and summarize in markdown'
+		? '从导航栏进入文档，打开「快速开始」，总结成 markdown'
+		: 'Open Docs in the nav, find Quick Start, and summarize in markdown'
 
 	const [task, setTask] = useState(() => defaultTask)
 	const [prevDefaultTask, setPrevDefaultTask] = useState(defaultTask)
@@ -56,12 +21,6 @@ export default function HeroSection() {
 		setPrevDefaultTask(defaultTask)
 		setTask(defaultTask)
 	}
-
-	const [params] = useSearchParams()
-	const isOther = params.has('try_other')
-
-	const [activeTab, setActiveTab] = useState<'try' | 'other'>(isOther ? 'other' : 'try')
-	const [cdnSource, setCdnSource] = useState<'international' | 'china'>('international')
 
 	const [ready, setReady] = useState(false)
 	useEffect(() => {
@@ -78,15 +37,14 @@ export default function HeroSection() {
 		if (!win.pageAgent || win.pageAgent.disposed) {
 			win.pageAgent = new (PageAgent as typeof PageAgentType)({
 				interactiveBlacklist: [document.getElementById('root')!],
-				language: language,
-
+				language,
 				instructions: {
-					system: 'You are a helpful assistant on PageAgent website.',
-					getPageInstructions: (url: string) => {
-						return url.includes('page-agent') ? 'This is PageAgent demo page.' : undefined
-					},
+					system: `You are a helpful assistant on the ${SITE.fullName} website.`,
+					getPageInstructions: (url: string) =>
+						url.includes('pageagent') || url.includes('page-agent')
+							? `This is the ${SITE.fullName} demo page.`
+							: undefined,
 				},
-
 				model:
 					import.meta.env.DEV && import.meta.env.LLM_MODEL_NAME
 						? import.meta.env.LLM_MODEL_NAME
@@ -105,317 +63,125 @@ export default function HeroSection() {
 		await win.pageAgent.execute(task)
 	}
 
-	return (
-		<section className="relative px-6 pt-18 pb-14 lg:pb-20 lg:pt-24" aria-labelledby="hero-heading">
-			<div className="max-w-7xl mx-auto text-center">
-				{/* Background Pattern + Particles */}
-				<div className="absolute inset-0 opacity-30" aria-hidden="true">
-					<div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 rounded-3xl transform rotate-1"></div>
-					<div className="absolute inset-0 bg-linear-to-l from-purple-400/20 to-blue-400/20 rounded-3xl transform -rotate-1"></div>
-				</div>
-				<Particles
-					className="absolute inset-0"
-					quantity={80}
-					staticity={30}
-					ease={80}
-					color="#6366f1"
-				/>
+	const bookmarklet = encodeURI(
+		`javascript:(function(){var s=document.createElement('script');s.src=\`${CDN_DEMO_URL}?lang=${isZh ? 'zh-CN' : 'en-US'}&t=\${Math.random()}\`;s.setAttribute('crossorigin','anonymous');s.type='text/javascript';document.body.appendChild(s);})();`
+	)
 
-				<div className="relative z-10">
-					<div className="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium bg-white/90 dark:bg-gray-800/90 rounded-full shadow-lg border border-gray-200 dark:border-gray-700">
+	return (
+		<section
+			className="relative isolate min-h-[min(100svh,920px)] overflow-hidden"
+			aria-labelledby="hero-heading"
+		>
+			{/* Full-bleed product visual */}
+			<div className="absolute inset-0 -z-10" aria-hidden="true">
+				<img
+					src={`${SITE.basePath}/brand/hero.png`}
+					alt=""
+					className="h-full w-full object-cover object-center scale-[1.02] animate-[connect-float_12s_ease-in-out_infinite]"
+				/>
+				<div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,20,18,0.55)_0%,rgba(12,20,18,0.72)_42%,rgba(12,20,18,0.92)_100%)]" />
+				<div className="absolute inset-0 bg-[radial-gradient(900px_480px_at_70%_20%,rgba(214,255,75,0.22),transparent_60%)]" />
+			</div>
+
+			<div className="mx-auto flex min-h-[min(100svh,920px)] max-w-6xl flex-col justify-end px-5 pb-10 pt-24 sm:px-6 sm:pb-14 lg:justify-center lg:pb-20 lg:pt-28">
+				<div className="max-w-2xl text-left text-[#eef6ef]">
+					<p
+						className="connect-rise mb-5 text-4xl font-extrabold tracking-[-0.04em] sm:text-5xl lg:text-6xl"
+						style={{ fontFamily: 'var(--font-brand)' }}
+					>
+						{SITE.name}{' '}
 						<span
-							className="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"
-							aria-hidden="true"
-						></span>
-						<AnimatedGradientText colorFrom="#3b82f6" colorTo="#8b5cf6">
-							AI Agent In Your Webpage
-						</AnimatedGradientText>
-					</div>
+							className="bg-[linear-gradient(90deg,#d6ff4b,#efffb0,#ff8f6b,#d6ff4b)] bg-[length:200%_100%] bg-clip-text text-transparent"
+							style={{ animation: 'connect-sheen 6s linear infinite' }}
+						>
+							Connect
+						</span>
+					</p>
 
 					<h1
 						id="hero-heading"
-						className="text-5xl lg:text-7xl font-bold mb-10 mt-8 bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent pb-1"
+						className="connect-rise connect-rise-delay-1 text-2xl font-semibold leading-snug tracking-[-0.02em] text-[#f7faf7] sm:text-3xl lg:text-[2.15rem]"
+						style={{ fontFamily: 'var(--font-brand)' }}
 					>
-						{isZh ? (
-							<>
-								<span className="text-6xl lg:text-7xl">你网站里的 AI 操作员</span>
-								<span className="block text-xl lg:text-2xl mt-5 font-medium bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-									The AI Operator Living in Your Web Page
-								</span>
-							</>
-						) : (
-							<>
-								The AI Operator
-								<br />
-								Living in Your Web Page
-							</>
-						)}
+						{isZh ? '把 AI 操作员装进你的网页。' : 'Ship an in-page AI agent.'}
 					</h1>
 
-					<p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-						<Highlighter action="underline" color="#8b5cf6" strokeWidth={2}>
-							<span className="bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-bold">
-								{isZh ? '🪄一行代码' : '🪄One line of code'}
-							</span>
-						</Highlighter>
+					<p className="connect-rise connect-rise-delay-2 mt-4 max-w-xl text-base leading-relaxed text-[rgba(216,235,224,0.82)] sm:text-lg">
 						{isZh
-							? '，让你的网站变身 AI 原生应用。'
-							: ', turns your website into an AI-native app.'}
-						<br />
-						{isZh
-							? '用户/答疑机器人给出文字指示，AI 帮你操作页面。'
-							: 'Users give natural language commands, AI handles the rest.'}
+							? '用自然语言控制任意 Web UI。登录模型提供商，一键导出集成片段。'
+							: 'Natural-language control for any web UI. Log in providers, pick a model, export a one-line integration.'}
 					</p>
 
-					{/* Try It Now Section - Tab Card */}
-					<div className="mb-12">
-						<div className="max-w-3xl mx-auto">
-							<NeonGradientCard
-								borderSize={2}
-								borderRadius={20}
-								neonColors={{ firstColor: '#ff00aa', secondColor: '#00FFF1' }}
-							>
-								{/* Tab Headers */}
-								<div className="flex border-b border-gray-200 dark:border-gray-700">
-									<button
-										onClick={() => setActiveTab('try')}
-										className={`cursor-pointer flex-1 px-4 py-4 text-lg font-medium transition-colors duration-200 rounded-tl-2xl ${
-											activeTab === 'try'
-												? 'bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 border-b-2 border-blue-500'
-												: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
-										}`}
-									>
-										{isZh ? '🚀 立即尝试' : '🚀 Try It Now'}
-									</button>
-									<button
-										onClick={() => setActiveTab('other')}
-										className={`cursor-pointer flex-1 px-4 py-4 text-lg font-medium transition-colors duration-200 rounded-tr-2xl ${
-											activeTab === 'other'
-												? 'bg-linear-to-r from-green-50 to-blue-50 dark:from-green-900/30 dark:to-blue-900/30 text-green-700 dark:text-green-300 border-b-2 border-green-500'
-												: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
-										}`}
-									>
-										{isZh ? '🌐 其他网页尝试' : '🌐 Try on Other Sites'}
-									</button>
-								</div>
-
-								{/* Tab Content */}
-								<div className="p-4">
-									{activeTab === 'try' && (
-										<div className="space-y-4">
-											<div className="relative">
-												<input
-													value={task}
-													onChange={(e) => setTask(e.target.value)}
-													placeholder={
-														isZh
-															? '输入您想要 AI 执行的任务...'
-															: 'Describe what you want AI to do...'
-													}
-													className="w-full px-4 py-3 pr-20 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm mb-0"
-													data-page-agent-not-interactive
-												/>
-												<button
-													onClick={handleExecute}
-													disabled={!ready}
-													className="absolute right-2 top-2 px-5 py-1.5 bg-linear-to-r from-blue-600 to-purple-600 text-white font-medium rounded-md hover:shadow-md transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm"
-													data-page-agent-not-interactive
-												>
-													{ready ? (
-														isZh ? (
-															'执行'
-														) : (
-															'Run'
-														)
-													) : (
-														<span className="animate-pulse">
-															{isZh ? '准备中...' : 'Preparing...'}
-														</span>
-													)}
-												</button>
-											</div>
-											<p className="text-xs text-gray-500 dark:text-gray-400 text-left">
-												{isZh ? (
-													<>
-														使用免费测试 LLM API，点击执行即表示您同意
-														<a
-															href="https://github.com/alibaba/page-agent/blob/main/docs/terms-and-privacy.md#2-testing-api-and-demo-disclaimer--terms-of-use"
-															target="_blank"
-															rel="noopener noreferrer"
-															className="underline"
-														>
-															使用条款
-														</a>
-													</>
-												) : (
-													<>
-														Powered by free testing LLM API. By clicking Run you agree to the{' '}
-														<a
-															href="https://github.com/alibaba/page-agent/blob/main/docs/terms-and-privacy.md#2-testing-api-and-demo-disclaimer--terms-of-use"
-															target="_blank"
-															rel="noopener noreferrer"
-															className="underline"
-														>
-															Terms of Use
-														</a>
-													</>
-												)}
-											</p>
-										</div>
-									)}
-
-									{activeTab === 'other' && (
-										<div className="grid md:grid-cols-2 gap-6">
-											{/* 左侧：操作步骤 */}
-											<div className="space-y-4">
-												<div className="bg-blue-50 dark:bg-gray-700 p-4 rounded-lg">
-													<p className="text-gray-700 dark:text-gray-300 text-sm mb-3">
-														<span className="font-semibold">{isZh ? '步骤 1:' : 'Step 1:'}</span>{' '}
-														{isZh ? '显示收藏夹栏' : 'Show your bookmarks bar'}
-													</p>
-													<div className="flex items-center justify-center gap-2">
-														<kbd className="px-2 py-1 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded text-xs font-mono">
-															Ctrl + Shift + B
-														</kbd>
-														<span className="text-gray-500 dark:text-gray-400">
-															{isZh ? '或' : 'or'}
-														</span>
-														<kbd className="px-2 py-1 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded text-xs font-mono">
-															⌘ + Shift + B
-														</kbd>
-													</div>
-												</div>
-
-												<div className="bg-green-50 dark:bg-gray-700 p-4 rounded-lg">
-													<p className="text-gray-700 dark:text-gray-300 text-sm mb-3">
-														<span className="font-semibold">{isZh ? '步骤 2:' : 'Step 2:'}</span>{' '}
-														{isZh ? '拖拽下面按钮到收藏夹栏' : 'Drag this button to your bookmarks'}
-													</p>
-													<div className="flex items-center justify-center gap-3">
-														<select
-															value={cdnSource}
-															onChange={(e) =>
-																setCdnSource(e.target.value as 'international' | 'china')
-															}
-															className="px-2 py-1.5 text-xs border border-gray-300 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-200"
-														>
-															<option value="international">jsdelivr CDN</option>
-															<option value="china">npmmirror CDN</option>
-														</select>
-														<div
-															dangerouslySetInnerHTML={{
-																__html: getInjection(cdnSource, isZh),
-															}}
-														></div>
-													</div>
-												</div>
-
-												<div className="bg-purple-50 dark:bg-gray-700 p-4 rounded-lg">
-													<p className="text-gray-700 dark:text-gray-300 text-sm">
-														<span className="font-semibold">{isZh ? '步骤 3:' : 'Step 3:'}</span>{' '}
-														{isZh
-															? '在其他网站点击收藏夹中的按钮即可使用'
-															: 'Click the bookmark on any site to activate'}
-													</p>
-												</div>
-											</div>
-
-											{/* 右侧：注意事项 */}
-											<div className="bg-yellow-50 dark:bg-gray-700 p-4 rounded-lg">
-												<h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm">
-													{isZh ? '⚠️ 注意' : '⚠️ Heads Up'}
-												</h4>
-												<ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-													<li className="flex items-start text-left">
-														<span className="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-2 mr-2 shrink-0 "></span>
-														{isZh ? (
-															<span>
-																使用免费测试 LLM API，使用即表示同意
-																<a
-																	href="https://github.com/alibaba/page-agent/blob/main/docs/terms-and-privacy.md#2-testing-api-and-demo-disclaimer--terms-of-use"
-																	target="_blank"
-																	rel="noopener noreferrer"
-																	className="text-yellow-700 dark:text-yellow-300 underline"
-																>
-																	使用条款
-																</a>
-															</span>
-														) : (
-															<span>
-																Uses free testing LLM API. By using you agree to the{' '}
-																<a
-																	href="https://github.com/alibaba/page-agent/blob/main/docs/terms-and-privacy.md#2-testing-api-and-demo-disclaimer--terms-of-use"
-																	target="_blank"
-																	rel="noopener noreferrer"
-																	className="text-yellow-700 dark:text-yellow-300 underline"
-																>
-																	Terms of Use
-																</a>
-															</span>
-														)}
-													</li>
-													<li className="flex items-start text-left">
-														<span className="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-2 mr-2 shrink-0 "></span>
-														{isZh
-															? '数据通过中国大陆服务器处理'
-															: 'Data processed via servers in Mainland China'}
-													</li>
-													<li className="flex items-start text-left">
-														<span className="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-2 mr-2 shrink-0 "></span>
-														{isZh
-															? '部分网站屏蔽了链接嵌入，将无反应'
-															: 'Some sites block script injection (CSP policies)'}
-													</li>
-													<li className="flex items-start text-left">
-														<span className="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-2 mr-2 shrink-0 "></span>
-														{isZh ? '支持单页应用' : 'Works on single-page apps'}
-													</li>
-													<li className="flex items-start text-left">
-														<span className="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-2 mr-2 shrink-0 "></span>
-														{isZh
-															? '仅识别文本，不识别图像，不支持拖拽等复杂交互'
-															: 'Text-only understanding—no image recognition or drag-and-drop'}
-													</li>
-													<li className="flex items-start text-left">
-														<span className="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-2 mr-2 shrink-0 "></span>
-														{isZh ? '详细使用限制参照' : 'Full limitations in'}
-														<Link
-															href="/docs/introduction/limitations"
-															className="text-blue-600 dark:text-blue-400 hover:underline pl-1"
-														>
-															{isZh ? '《文档》' : 'Docs'}
-														</Link>
-													</li>
-												</ul>
-											</div>
-										</div>
-									)}
-								</div>
-							</NeonGradientCard>
-						</div>
+					<div className="connect-rise connect-rise-delay-3 mt-8 flex flex-wrap items-center gap-3">
+						<Link
+							href="/docs/introduction/quick-start"
+							className="inline-flex items-center justify-center rounded-xl bg-[var(--connect-accent)] px-5 py-3 text-sm font-semibold text-[var(--connect-ink)] transition hover:brightness-105"
+						>
+							{isZh ? '快速开始' : 'Quick start'}
+						</Link>
+						<a
+							href={SITE.github}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-5 py-3 text-sm font-medium text-[#eef6ef] backdrop-blur-sm transition hover:border-[var(--connect-accent)]/50 hover:bg-white/10"
+						>
+							GitHub
+						</a>
+						<a
+							href={bookmarklet}
+							className="inline-flex cursor-grab items-center justify-center rounded-xl border border-dashed border-[var(--connect-accent)]/55 px-4 py-3 text-xs font-medium text-[var(--connect-accent)]"
+							draggable
+							onClick={(e) => e.preventDefault()}
+							title={
+								isZh ? '拖到书签栏，在其他网站试用' : 'Drag to bookmarks to try on other sites'
+							}
+						>
+							{isZh ? '书签试用' : 'Bookmarklet'}
+						</a>
 					</div>
+				</div>
 
-					<ul
-						className="flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400"
-						role="list"
+				{/* Interactive try panel — only interactive surface in hero */}
+				<div className="connect-rise connect-rise-delay-3 mt-10 w-full max-w-2xl rounded-2xl border border-white/12 bg-[rgba(18,32,28,0.72)] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-md sm:p-5">
+					<label
+						htmlFor="connect-demo-task"
+						className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[rgba(216,235,224,0.55)]"
 					>
-						<li className="flex items-center">
-							<span className="w-2 h-2 bg-green-500 rounded-full mr-2" aria-hidden="true"></span>
-							{isZh ? '纯前端方案' : 'Pure Front-end Solution'}
-						</li>
-						<li className="flex items-center">
-							<span className="w-2 h-2 bg-green-500 rounded-full mr-2" aria-hidden="true"></span>
-							{isZh ? '支持私有模型' : 'Your Own Models'}
-						</li>
-						<li className="flex items-center">
-							<span className="w-2 h-2 bg-green-500 rounded-full mr-2" aria-hidden="true"></span>
-							{isZh ? '无痛脱敏' : 'Built-in Privacy'}
-						</li>
-						<li className="flex items-center">
-							<span className="w-2 h-2 bg-green-500 rounded-full mr-2" aria-hidden="true"></span>
-							{isZh ? 'MIT 开源' : 'MIT Open Source'}
-						</li>
-					</ul>
+						{isZh ? '在此页试用' : 'Try on this page'}
+					</label>
+					<div className="relative">
+						<input
+							id="connect-demo-task"
+							value={task}
+							onChange={(e) => setTask(e.target.value)}
+							placeholder={isZh ? '描述你希望 AI 执行的任务…' : 'Describe a task for the agent…'}
+							className="w-full rounded-xl border border-white/10 bg-[rgba(12,20,18,0.65)] px-4 py-3 pr-24 text-sm text-[#eef6ef] placeholder:text-white/35 outline-none ring-[var(--connect-accent)] focus:ring-2"
+							data-page-agent-not-interactive
+						/>
+						<button
+							type="button"
+							onClick={handleExecute}
+							disabled={!ready}
+							className="absolute right-2 top-2 rounded-lg bg-[var(--connect-accent)] px-4 py-1.5 text-sm font-semibold text-[var(--connect-ink)] transition enabled:hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
+							data-page-agent-not-interactive
+						>
+							{ready ? (isZh ? '运行' : 'Run') : isZh ? '准备中…' : '…'}
+						</button>
+					</div>
+					<p className="mt-2 text-left text-[11px] leading-relaxed text-[rgba(216,235,224,0.5)]">
+						{isZh
+							? '使用免费测试 API。点击即表示同意'
+							: 'Uses the free testing API. By running you agree to the'}{' '}
+						<a
+							href={SITE.termsDemoUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="underline"
+						>
+							{isZh ? '使用条款' : 'Terms'}
+						</a>
+						.
+					</p>
 				</div>
 			</div>
 		</section>

@@ -37,7 +37,7 @@ const SPA_ROUTES = [
 	'docs/advanced/security-permissions',
 ]
 
-const SITE_URL = 'https://alibaba.github.io/page-agent'
+const SITE_URL = 'https://sushant-kataria.github.io/pageagent'
 
 function spaRoutes() {
 	return {
@@ -70,7 +70,7 @@ function spaRoutes() {
 
 // Website Config (React Documentation Site)
 export default defineConfig(({ mode }) => ({
-	base: '/page-agent/',
+	base: '/pageagent/',
 	clearScreen: false,
 	plugins: [react(), tailwindcss(), spaRoutes()],
 	build: {

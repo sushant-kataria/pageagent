@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const STATS_URL = 'https://page-agent.github.io/gh-stats/stats.json'
+import { SITE } from '@/site'
 
 let cached: number | null = null
 
@@ -10,10 +10,13 @@ export function useGitHubStars() {
 	useEffect(() => {
 		if (cached !== null) return
 		const controller = new AbortController()
-		fetch(STATS_URL, { signal: controller.signal })
-			.then((r) => r.json())
+		fetch(SITE.githubApi, {
+			signal: controller.signal,
+			headers: { Accept: 'application/vnd.github+json' },
+		})
+			.then((r) => (r.ok ? r.json() : Promise.reject(new Error(`GitHub API ${r.status}`))))
 			.then((data) => {
-				cached = data.stargazers_count ?? null
+				cached = typeof data.stargazers_count === 'number' ? data.stargazers_count : null
 				setStars(cached)
 			})
 			.catch(() => {})

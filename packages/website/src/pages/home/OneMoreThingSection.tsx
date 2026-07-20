@@ -1,113 +1,67 @@
-import { ExternalLink } from 'lucide-react'
-import { siGooglechrome } from 'simple-icons'
 import { Link } from 'wouter'
 
 import { BlurFade } from '../../components/ui/blur-fade'
-import { MagicCard } from '../../components/ui/magic-card'
 import { useLanguage } from '../../i18n/context'
+import { SITE } from '../../site'
 
 export default function OneMoreThingSection() {
 	const { isZh } = useLanguage()
 
 	return (
-		<section className="px-6 py-14" aria-labelledby="one-more-thing-heading">
-			<div className="max-w-4xl mx-auto text-center">
+		<section className="px-5 py-20 sm:px-6" aria-labelledby="start-heading">
+			<div className="mx-auto max-w-6xl">
 				<BlurFade inView>
-					<h2
-						id="one-more-thing-heading"
-						className="text-4xl lg:text-5xl font-bold mb-6 bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-					>
-						One More Thing
-					</h2>
-					<p className="text-xl text-gray-600 dark:text-gray-300 mb-4 max-w-2xl mx-auto">
-						{isZh
-							? '想要多页面控制？试试可选的浏览器扩展。'
-							: 'Need multi-page control? Try the optional browser extension.'}
+					<p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--connect-accent-deep)] dark:text-[var(--connect-accent)]">
+						{isZh ? '开始' : 'Get started'}
 					</p>
-					<p className="text-sm text-gray-500 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
-						{'* '}
+					<h2
+						id="start-heading"
+						className="max-w-2xl text-3xl font-extrabold tracking-[-0.03em] text-[var(--foreground)] sm:text-4xl"
+						style={{ fontFamily: 'var(--font-brand)' }}
+					>
+						{isZh ? '一条命令打开 Connect。' : 'One command opens Connect.'}
+					</h2>
+					<p className="mt-4 max-w-2xl text-base text-[var(--muted-foreground)] sm:text-lg">
 						{isZh
-							? 'PageAgent.js 本身无需任何扩展即可工作，扩展是额外的能力增强。'
-							: 'PageAgent.js works without any extension — this is a power-up, not a dependency.'}
+							? `克隆本仓库后本地启动控制台，或直接看文档接入 ${SITE.libraryName}。`
+							: 'Clone this repo, start the console locally, or jump straight into the docs.'}
 					</p>
 				</BlurFade>
 
-				<div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-					<a
-						href="https://chromewebstore.google.com/detail/page-agent-ext/akldabonmimlicnjlflnapfeklbfemhj"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="group inline-flex items-center gap-3 px-8 py-4 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-					>
-						<img
-							src="https://page-agent.github.io/assets/third-party/chrome-web-store-192.svg"
-							alt="Chrome Web Store"
-							className="w-7 h-7"
-						/>
-						<span>{isZh ? '从 Chrome 应用商店安装' : 'Install from Chrome Web Store'}</span>
-						<ExternalLink className="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity" />
-					</a>
-					<Link
-						href="/docs/features/chrome-extension"
-						className="inline-flex items-center gap-3 px-8 py-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium rounded-2xl transition-all duration-300 hover:scale-105"
-					>
-						<svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
-							<path d={siGooglechrome.path} fill="currentColor" />
-						</svg>
-						<span>{isZh ? '查看文档' : 'Read the Docs'}</span>
-					</Link>
-				</div>
+				<BlurFade inView delay={0.08}>
+					<pre className="mt-10 overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--connect-ink)] p-5 text-sm leading-7 text-[var(--connect-mist)] sm:p-6">
+						<code>
+							<span className="text-[var(--connect-accent)]">npm</span> install{'\n'}
+							<span className="text-[var(--connect-accent)]">npm</span> start{'\n'}
+							<span className="text-white/35">{'// → http://localhost:5173'}</span>
+						</code>
+					</pre>
+				</BlurFade>
 
-				<div className="mb-10 rounded-2xl border border-blue-200/70 dark:border-blue-800/70 bg-linear-to-r from-blue-50 to-white dark:from-blue-950/30 dark:to-gray-900 px-5 py-4 max-w-3xl mx-auto text-left sm:text-center">
-					<p className="text-sm text-gray-700 dark:text-gray-300 leading-7">
-						{isZh
-							? '从 Claude Desktop、Copilot 或其他本地 Agent 直接发起浏览器任务？'
-							: 'Using Claude Desktop, Copilot, or another local agent? Connect it to the extension with the MCP server.'}
-					</p>
-					<p>
+				<BlurFade inView delay={0.12}>
+					<div className="mt-8 flex flex-wrap gap-3">
 						<Link
-							href="/docs/features/mcp-server"
-							className="font-medium text-blue-700 dark:text-blue-300 underline underline-offset-4"
+							href="/docs/introduction/quick-start"
+							className="inline-flex items-center justify-center rounded-xl bg-[var(--connect-ink)] px-5 py-3 text-sm font-semibold text-[var(--connect-accent)] transition hover:brightness-110 dark:bg-[var(--connect-accent)] dark:text-[var(--connect-ink)]"
 						>
-							{isZh ? '查看 MCP 文档' : 'Read the MCP docs'}
+							{isZh ? '阅读文档' : 'Read the docs'}
 						</Link>
-					</p>
-				</div>
-
-				<div className="grid sm:grid-cols-3 gap-5 text-left max-w-3xl mx-auto">
-					{[
-						{
-							title: isZh ? '多页面任务' : 'Multi-Page Tasks',
-							desc: isZh
-								? '跨多个页面和标签页连续执行任务，不再受限于单页上下文'
-								: 'Run tasks across multiple pages and tabs without being limited to a single page context',
-						},
-						{
-							title: isZh ? '从页面发起控制' : 'Control from a WebPage',
-							desc: isZh
-								? '在页面 JS 中发起任务，驱动整个浏览器完成跨标签操作'
-								: 'Trigger tasks from in-page JS to drive the entire browser across tabs',
-						},
-						{
-							title: isZh ? '外部发起任务' : 'External Caller',
-							desc: isZh
-								? '页面 JS、本地 Agent 或云端 Agent 均可通过扩展发起任务'
-								: 'Local agents and cloud agents can control user browser through the extension',
-						},
-					].map((item) => (
-						<MagicCard
-							key={item.title}
-							className="rounded-xl"
-							gradientColor="#8b5cf620"
-							gradientOpacity={0.15}
+						<a
+							href={SITE.github}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-5 py-3 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--connect-accent-deep)]"
 						>
-							<div className="p-5">
-								<h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
-								<p className="text-sm text-gray-600 dark:text-gray-300">{item.desc}</p>
-							</div>
-						</MagicCard>
-					))}
-				</div>
+							{isZh ? '查看仓库' : 'View repository'}
+						</a>
+						<Link
+							href="/docs/features/chrome-extension"
+							className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium text-[var(--muted-foreground)] underline-offset-4 hover:text-[var(--foreground)] hover:underline"
+						>
+							{isZh ? '可选：浏览器扩展' : 'Optional: browser extension'}
+						</Link>
+					</div>
+				</BlurFade>
 			</div>
 		</section>
 	)

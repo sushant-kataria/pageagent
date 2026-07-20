@@ -17,7 +17,8 @@ import {
 	upsertSession,
 } from './lib/storage'
 
-type SnippetKind = 'command' | 'script' | 'npm' | 'bookmarklet'
+const PRODUCT_NAME = 'WebPilot'
+const PRODUCT_FULL_NAME = 'WebPilot Connect'
 
 const PAGE_AGENT_CDN = `https://cdn.jsdelivr.net/npm/page-agent@${PAGE_AGENT_VERSION}/dist/iife/page-agent.demo.js?autoInit=false`
 
@@ -162,7 +163,7 @@ export default function App() {
 		} catch (error) {
 			console.error(error)
 			setAgentStatus('error')
-			showToast('Could not load PageAgent from CDN')
+			showToast(`Could not load ${PRODUCT_NAME} runtime from CDN`)
 		}
 	}
 
@@ -196,9 +197,9 @@ export default function App() {
 	return (
 		<div className="app">
 			<header className="topbar">
-				<a className="brand" href="#top" aria-label="PageAgent Connect">
+				<a className="brand" href="#top" aria-label={PRODUCT_FULL_NAME}>
 					<span className="brand-mark" aria-hidden="true" />
-					<span className="brand-name">PageAgent</span>
+					<span className="brand-name">{PRODUCT_NAME}</span>
 				</a>
 				<nav className="top-links">
 					<a href="#models">Models</a>
@@ -212,7 +213,7 @@ export default function App() {
 
 			<main>
 				<section className="hero" id="top">
-					<p className="hero-brand">PageAgent</p>
+					<p className="hero-brand">{PRODUCT_NAME}</p>
 					<h2>Connect any page to your models in one command.</h2>
 					<p>
 						Start the local Connect UI, log in a provider with your API key, pick a model, then drop
@@ -451,7 +452,8 @@ export default function App() {
 					<div className="section-head">
 						<h3>Try it here</h3>
 						<p>
-							Load PageAgent on this page with your active model and run a natural-language task.
+							Load {PRODUCT_NAME} on this page with your active model and run a natural-language
+							task.
 						</p>
 					</div>
 
@@ -461,7 +463,7 @@ export default function App() {
 								{agentStatus === 'ready'
 									? `Ready · ${active.model}`
 									: agentStatus === 'loading'
-										? 'Loading PageAgent…'
+										? `Loading ${PRODUCT_NAME}…`
 										: agentStatus === 'error'
 											? 'CDN load failed'
 											: 'Not connected'}
