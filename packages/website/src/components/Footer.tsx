@@ -17,7 +17,7 @@ export default function Footer() {
 						style={{ fontFamily: 'var(--font-brand)' }}
 						className="font-bold text-[var(--foreground)]"
 					>
-						{SITE.name}
+						{SITE.fullName}
 					</p>
 					<p className="mt-1 text-xs">
 						{isZh ? '基于' : 'Built on'}{' '}

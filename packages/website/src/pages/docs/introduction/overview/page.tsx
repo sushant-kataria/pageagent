@@ -1,5 +1,6 @@
 import { Heading } from '@/components/Heading'
 import { useLanguage } from '@/i18n/context'
+import { SITE } from '@/site'
 
 export default function Overview() {
 	const { isZh } = useLanguage()
@@ -10,8 +11,8 @@ export default function Overview() {
 				<h1 className="text-4xl font-bold mb-4">Overview</h1>
 				<p className="text-xl text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
 					{isZh
-						? 'page-agent 是一个完全基于 Web 技术的 GUI Agent，简单几步，让你的网站拥有 AI 操作员。'
-						: 'page-agent is a purely web-based GUI Agent. Gives your website an AI operator in simple steps.'}
+						? `${SITE.name} 是一个完全基于 Web 技术的 GUI Agent，简单几步，让你的网站拥有 AI 操作员。`
+						: `${SITE.name} is a purely web-based GUI Agent. Gives your website an AI operator in simple steps.`}
 				</p>
 
 				{/* Status Badges */}
@@ -49,14 +50,14 @@ export default function Overview() {
 			</div>
 
 			<section>
-				<Heading id="what-is-page-agent" className="text-2xl font-bold mb-4">
-					{isZh ? '什么是 page-agent？' : 'What is page-agent?'}
+				<Heading id="what-is-webpilot" className="text-2xl font-bold mb-4">
+					{isZh ? `什么是 ${SITE.name}？` : `What is ${SITE.name}?`}
 				</Heading>
 
 				<p className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed ">
 					{isZh
-						? 'page-agent 是一个页面内嵌式 GUI Agent。与传统的浏览器自动化工具不同，page-agent 面向网站开发者，而非爬虫或Agent客户端开发者；将 Agent 集成到你的网站中，让用户可以通过自然语言与页面进行交互。'
-						: 'page-agent is an embedded GUI Agent. Unlike traditional browser automation tools, page-agent is built for web developers and web applications first. Integrate it into your site to let users interact with pages through natural language.'}
+						? `${SITE.name} 是一个页面内嵌式 GUI Agent，基于开源库 ${SITE.libraryName}。与传统的浏览器自动化工具不同，它面向网站开发者；将 Agent 集成到你的网站中，让用户可以通过自然语言与页面进行交互。`
+						: `${SITE.name} is an embedded GUI Agent built on the open-source ${SITE.libraryName} library. Unlike traditional browser automation tools, it is built for web developers and web applications first. Integrate it into your site to let users interact with pages through natural language.`}
 				</p>
 			</section>
 

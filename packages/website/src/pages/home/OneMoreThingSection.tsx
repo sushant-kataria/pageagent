@@ -23,7 +23,7 @@ export default function OneMoreThingSection() {
 					</h2>
 					<p className="mt-4 max-w-2xl text-base text-[var(--muted-foreground)] sm:text-lg">
 						{isZh
-							? '克隆本仓库后本地启动控制台，或直接看文档接入 page-agent。'
+							? `克隆本仓库后本地启动控制台，或直接看文档接入 ${SITE.libraryName}。`
 							: 'Clone this repo, start the console locally, or jump straight into the docs.'}
 					</p>
 				</BlurFade>

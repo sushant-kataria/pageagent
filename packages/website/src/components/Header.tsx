@@ -25,7 +25,7 @@ export default function Header() {
 					<Link
 						href="/"
 						className="group flex shrink-0 items-center gap-2.5"
-						aria-label={isZh ? 'PageAgent Connect 首页' : 'PageAgent Connect home'}
+						aria-label={isZh ? `${SITE.fullName} 首页` : `${SITE.fullName} home`}
 						onClick={() => setMobileMenuOpen(false)}
 					>
 						<span
@@ -37,7 +37,7 @@ export default function Header() {
 								className="block text-[1.05rem] font-extrabold tracking-[-0.03em] text-[var(--foreground)] sm:text-lg"
 								style={{ fontFamily: 'var(--font-brand)' }}
 							>
-								PageAgent{' '}
+								{SITE.name}{' '}
 								<span className="text-[var(--connect-accent-deep)] dark:text-[var(--connect-accent)]">
 									Connect
 								</span>

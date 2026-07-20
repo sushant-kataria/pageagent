@@ -39,10 +39,10 @@ export default function HeroSection() {
 				interactiveBlacklist: [document.getElementById('root')!],
 				language,
 				instructions: {
-					system: 'You are a helpful assistant on the PageAgent Connect website.',
+					system: `You are a helpful assistant on the ${SITE.fullName} website.`,
 					getPageInstructions: (url: string) =>
 						url.includes('pageagent') || url.includes('page-agent')
-							? 'This is the PageAgent Connect demo page.'
+							? `This is the ${SITE.fullName} demo page.`
 							: undefined,
 				},
 				model:
@@ -89,7 +89,7 @@ export default function HeroSection() {
 						className="connect-rise mb-5 text-4xl font-extrabold tracking-[-0.04em] sm:text-5xl lg:text-6xl"
 						style={{ fontFamily: 'var(--font-brand)' }}
 					>
-						PageAgent{' '}
+						{SITE.name}{' '}
 						<span
 							className="bg-[linear-gradient(90deg,#d6ff4b,#efffb0,#ff8f6b,#d6ff4b)] bg-[length:200%_100%] bg-clip-text text-transparent"
 							style={{ animation: 'connect-sheen 6s linear infinite' }}

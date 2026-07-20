@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="./docs/assets/page-agent-connect-hero.png" alt="PageAgent Connect — binary intelligence for the open web" width="920" />
+  <img src="./docs/assets/page-agent-connect-hero.png" alt="WebPilot Connect — binary intelligence for the open web" width="920" />
 </p>
 
-<h1 align="center">PageAgent Connect</h1>
+<h1 align="center">WebPilot Connect</h1>
 
 <p align="center">
   <strong>Ship an in-page AI agent. Connect models in one command.</strong><br />
@@ -18,9 +18,9 @@
 
 ---
 
-## Why PageAgent Connect
+## Why WebPilot Connect
 
-PageAgent puts a GUI agent **inside the page** — text-based DOM control, bring-your-own models, and a path from demo to production.
+WebPilot puts a GUI agent **inside the page** — text-based DOM control, bring-your-own models, and a path from demo to production.
 
 **Connect** is the commercial on-ramp: a focused console to authenticate providers, select models, and export a one-line integration for any site.
 
@@ -85,7 +85,7 @@ await agent.execute('Complete the checkout form')
 
 ### Production auth (no API key in the browser)
 
-For commercial deployments, keep provider credentials on your server. Users sign into your app; PageAgent calls a same-origin proxy with session cookies:
+For commercial deployments, keep provider credentials on your server. Users sign into your app; WebPilot calls a same-origin proxy with session cookies:
 
 ```js
 const agent = new PageAgent({
@@ -133,12 +133,12 @@ packages/
 
 MIT License — see [LICENSE](./LICENSE).
 
-PageAgent is upstream open source from [Alibaba page-agent](https://github.com/alibaba/page-agent). This repository packages that codebase with the Connect console for streamlined commercial evaluation and integration.
+WebPilot is built on upstream open source from [Alibaba page-agent](https://github.com/alibaba/page-agent). This repository packages that codebase with the Connect console for streamlined commercial evaluation and integration.
 
 DOM processing and prompt patterns acknowledge [browser-use](https://github.com/browser-use/browser-use).
 
 ---
 
 <p align="center">
-  <sub>PageAgent Connect · One command. Your models. Any page.</sub>
+  <sub>WebPilot Connect · One command. Your models. Any page.</sub>
 </p>

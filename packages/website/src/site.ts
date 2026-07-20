@@ -1,7 +1,13 @@
 /** Fork-owned site identity (not upstream Alibaba Pages). */
 export const SITE = {
-	name: 'PageAgent Connect',
+	/** Primary product name shown in UI */
+	name: 'WebPilot',
+	/** Full product name when the Connect console is implied */
+	fullName: 'WebPilot Connect',
 	tagline: 'Ship an in-page AI agent. Connect models in one command.',
+	/** Upstream npm library this product is built on */
+	libraryName: 'page-agent',
+	libraryNpm: 'page-agent',
 	github: 'https://github.com/sushant-kataria/pageagent',
 	githubApi: 'https://api.github.com/repos/sushant-kataria/pageagent',
 	termsUrl: 'https://github.com/sushant-kataria/pageagent/blob/main/docs/terms-and-privacy.md',
