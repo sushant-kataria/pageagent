@@ -16,8 +16,8 @@ export default function HomePage() {
 			<HeroSection />
 			<Suspense
 				fallback={
-					<div className="flex items-center justify-center gap-3 py-20 text-gray-400">
-						<div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+					<div className="flex items-center justify-center gap-3 py-20 text-[var(--muted-foreground)]">
+						<div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--connect-accent-deep)] border-t-transparent" />
 						Loading...
 					</div>
 				}

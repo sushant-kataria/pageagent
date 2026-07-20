@@ -10,12 +10,12 @@ import './index.css'
 const { hash } = window.location
 if (hash.length > 1 && hash.includes('/')) {
 	const path = hash.replace(/^#\/?/, '/')
-	history.replaceState(null, '', '/page-agent' + path)
+	history.replaceState(null, '', '/pageagent' + path)
 }
 
 createRoot(document.getElementById('root')!).render(
 	<LanguageProvider>
-		<Router base="/page-agent">
+		<Router base="/pageagent">
 			<PagesRouter />
 		</Router>
 	</LanguageProvider>

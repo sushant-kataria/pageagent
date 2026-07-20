@@ -1,50 +1,37 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<link
-			rel="icon"
-			type="image/webp"
-			href="https://page-agent.github.io/assets/brand/page-agent-color-64.webp"
-		/>
+		<link rel="icon" type="image/png" href="/pageagent/brand/hero.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>PageAgent - The GUI Agent Living in Your Webpage</title>
+		<title>PageAgent Connect — In-page AI agent</title>
 		<meta
 			name="description"
-			content="PageAgent.js: Intelligent GUI Agent for any website. Modern web AI automation with minimal integration."
+			content="PageAgent Connect: ship an in-page AI agent, log in model providers, and export a one-line integration for any site."
 		/>
 		<meta
 			name="keywords"
-			content="PageAgent, AI Agent, GUI Agent, Web Automation, GUI Automation, Frontend, CDN, JavaScript, React, Vite, LLM"
+			content="PageAgent Connect, PageAgent, AI Agent, GUI Agent, Web Automation, OpenAI-compatible, BYOK"
 		/>
-		<meta
-			property="og:image"
-			content="https://page-agent.github.io/assets/brand/page-agent-color-512.webp"
-		/>
-		<meta property="og:url" content="https://alibaba.github.io/page-agent" />
+		<meta property="og:image" content="https://sushant-kataria.github.io/pageagent/brand/hero.png" />
+		<meta property="og:url" content="https://sushant-kataria.github.io/pageagent" />
 		<meta property="og:type" content="website" />
-		<meta name="theme-color" content="#58c0fc" />
+		<meta name="theme-color" content="#9fcf1f" />
 		<meta name="color-scheme" content="light dark" />
-		<meta name="author" content="PageAgent.js Team" />
-		<meta property="og:title" content="PageAgent.js - AI-powered GUI Agent" />
-		<meta property="og:description" content="The GUI Agent living in your website." />
-		<meta property="og:type" content="website" />
+		<meta name="author" content="PageAgent Connect" />
+		<meta property="og:title" content="PageAgent Connect" />
+		<meta
+			property="og:description"
+			content="Ship an in-page AI agent. Connect models in one command."
+		/>
 		<meta property="og:locale" content="en_US" />
 		<meta property="og:locale:alternate" content="zh_CN" />
-
-		<!-- Google tag (gtag.js) -->
-		<!-- cspell:disable -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-HCGRJTN3HM"></script>
-		<script>
-			window.dataLayer = window.dataLayer || []
-			function gtag() {
-				dataLayer.push(arguments)
-			}
-			gtag('js', new Date())
-
-			gtag('config', 'G-HCGRJTN3HM')
-		</script>
-		<!-- cspell:enable -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
 		<div id="root">
@@ -56,27 +43,25 @@
 						align-items: center;
 						justify-content: center;
 						min-height: 100vh;
-						background: linear-gradient(135deg, #eff6ff, #f5f3ff);
-					}
-					@media (prefers-color-scheme: dark) {
-						#sk {
-							background: linear-gradient(135deg, #111827, #1f2937);
-						}
+						background:
+							radial-gradient(900px 500px at 12% -8%, rgba(159, 207, 31, 0.22), transparent 55%),
+							linear-gradient(165deg, #f3f7f2 0%, #e7efe8 50%, #f7f3ee 100%);
 					}
 					.sk-text {
 						font:
-							400 14px/1 system-ui,
+							500 14px/1 Figtree,
+							system-ui,
 							sans-serif;
-						color: #94a3b8;
+						color: #4a6358;
 						animation: skf 2s ease-in-out infinite;
 					}
 					@keyframes skf {
 						0%,
 						100% {
-							opacity: 0.6;
+							opacity: 0.7;
 						}
 						50% {
-							opacity: 0.3;
+							opacity: 0.35;
 						}
 					}
 				</style>
@@ -85,7 +70,7 @@
 		<script type="module" src="./src/main.tsx"></script>
 		<script>
 			const updateHtmlLang = () => {
-				const lang = localStorage.getItem('i18nextLng') || navigator.language || 'zh-CN'
+				const lang = localStorage.getItem('i18nextLng') || navigator.language || 'en-US'
 				document.documentElement.lang = lang
 				const el = document.getElementById('sk-text')
 				if (el) el.textContent = lang.startsWith('zh') ? '加载中...' : 'Loading...'

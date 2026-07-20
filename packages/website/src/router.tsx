@@ -33,20 +33,17 @@ export default function Router() {
 				<ScrollToTop />
 				<Switch>
 					<Route path="/">
-						<main
-							id="main-content"
-							className="flex-1 bg-linear-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800"
-						>
+						<main id="main-content" className="connect-home flex-1">
 							<HomePage />
 						</main>
 					</Route>
 
 					<Route path="/docs" nest>
-						<div className="flex-1 bg-white dark:bg-gray-900">
+						<div className="flex-1 bg-[var(--background)]">
 							<Suspense
 								fallback={
-									<div className="flex items-center justify-center gap-3 py-20 text-gray-400">
-										<div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+									<div className="flex items-center justify-center gap-3 py-20 text-[var(--muted-foreground)]">
+										<div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--connect-accent-deep)] border-t-transparent" />
 										Loading...
 									</div>
 								}
@@ -57,10 +54,15 @@ export default function Router() {
 					</Route>
 
 					<Route>
-						<div className="flex-1 bg-white dark:bg-gray-900 flex items-center justify-center">
+						<div className="flex flex-1 items-center justify-center bg-[var(--background)]">
 							<div className="text-center">
-								<h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">404</h1>
-								<p className="text-xl text-gray-600 dark:text-gray-300">Page not found</p>
+								<h1
+									className="mb-4 text-4xl font-extrabold text-[var(--foreground)]"
+									style={{ fontFamily: 'var(--font-brand)' }}
+								>
+									404
+								</h1>
+								<p className="text-lg text-[var(--muted-foreground)]">Page not found</p>
 							</div>
 						</div>
 					</Route>

@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 
-const DEFAULT_TITLE = 'PageAgent - The GUI Agent Living in Your Webpage'
+import { SITE } from '@/site'
+
+const DEFAULT_TITLE = `${SITE.name} — In-page AI agent`
 
 export function useDocumentTitle(title?: string) {
 	useEffect(() => {
-		document.title = title ? `${title} - PageAgent` : DEFAULT_TITLE
+		document.title = title ? `${title} · ${SITE.name}` : DEFAULT_TITLE
 	}, [title])
 }
